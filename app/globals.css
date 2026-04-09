@@ -1,0 +1,451 @@
+/* ============================================================
+   THE DA VINCI NODE — retro-futurist pulp sci-fi system
+   Colour + type extracted from the Colossus '26 brochure
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Rubik+Mono+One&family=VT323&family=JetBrains+Mono:wght@400;600;800&display=swap');
+
+:root {
+  /* Brochure palette — sampled from the cover pages */
+  --cream:        #f3ecc5;   /* page backgrounds, light panels */
+  --cream-2:      #e8dfa9;
+  --sage:         #8ba481;   /* cover green */
+  --sage-deep:    #5c6f55;
+  --oxblood:      #a42a20;   /* COLOSSUS red */
+  --oxblood-dim:  #7a1e17;
+  --ember:        #e8753e;   /* orange accent */
+  --ember-dim:    #b8551f;
+  --dust:         #cf9a55;   /* tan */
+  --ink:          #1a1814;   /* body text on cream */
+  --ink-2:        #3a342a;
+  --shadow:       rgba(26, 24, 20, 0.35);
+
+  /* Type */
+  --f-display: 'Bungee', 'Rubik Mono One', sans-serif;
+  --f-display-inline: 'Bungee Inline', 'Bungee', sans-serif;
+  --f-terminal: 'VT323', monospace;
+  --f-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper-grain atmosphere layered over everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(164, 42, 32, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(139, 164, 129, 0.10) 0%, transparent 45%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(26, 24, 20, 0.025) 0px,
+      rgba(26, 24, 20, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  mix-blend-mode: multiply;
+}
+
+/* Scanline overlay — the "CRT reactor monitor" feel */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.035) 3px,
+    transparent 4px
+  );
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+.display {
+  font-family: var(--f-display);
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.display-inline {
+  font-family: var(--f-display-inline);
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.terminal {
+  font-family: var(--f-terminal);
+  font-size: 1.5em;
+  letter-spacing: 0.03em;
+}
+
+h1, h2, h3 {
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  margin: 0 0 0.6em;
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 7vw, 5.2rem);
+  color: var(--oxblood);
+  text-shadow: 3px 3px 0 var(--cream-2), 6px 6px 0 var(--shadow);
+}
+
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); color: var(--oxblood); }
+h3 { font-size: 1.15rem; color: var(--sage-deep); letter-spacing: 0.1em; }
+
+p { margin: 0 0 0.9em; }
+
+a {
+  color: var(--oxblood);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--ember); }
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+
+.stage {
+  position: relative;
+  z-index: 5;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 3vw, 2.5rem);
+}
+
+.panel {
+  position: relative;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--oxblood), 8px 8px 0 1px var(--ink);
+  padding: 1.6rem 1.8rem;
+}
+
+.panel--sage   { background: var(--sage);    color: var(--cream); }
+.panel--ox     { background: var(--oxblood); color: var(--cream); }
+.panel--ember  { background: var(--ember);   color: var(--ink); }
+.panel--cream  { background: var(--cream-2); }
+
+.panel--sage h2, .panel--ox h2 { color: var(--cream); }
+.panel--sage h3, .panel--ox h3 { color: var(--cream-2); }
+
+/* Stencil stripe header used throughout the brochure */
+.stripe {
+  display: inline-block;
+  padding: 0.35em 1em 0.45em;
+  background: var(--oxblood);
+  color: var(--cream);
+  font-family: var(--f-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.stripe--sage  { background: var(--sage-deep); }
+.stripe--ember { background: var(--ember); color: var(--ink); }
+.stripe--cream { background: var(--cream-2); color: var(--ink); }
+
+/* Diagonal sash like the COLOSSUS title bar */
+.sash {
+  position: relative;
+  background: var(--cream-2);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 1.4rem 2rem;
+  transform: skewY(-1.5deg);
+  margin: 2rem 0;
+}
+.sash > * { transform: skewY(1.5deg); }
+
+/* ============================================================
+   FORM CONTROLS
+   ============================================================ */
+
+input, textarea, select, button {
+  font-family: var(--f-mono);
+  font-size: 0.9rem;
+}
+
+.field {
+  display: block;
+  width: 100%;
+  padding: 0.75em 0.9em;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  box-shadow: inset 2px 2px 0 var(--shadow);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+.field:focus {
+  border-color: var(--oxblood);
+  box-shadow: inset 2px 2px 0 var(--shadow), 0 0 0 3px var(--ember);
+}
+textarea.field { resize: vertical; min-height: 90px; }
+
+.label {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--sage-deep);
+  margin-bottom: 0.45em;
+  text-transform: uppercase;
+}
+
+/* Big pulpy action buttons */
+.btn {
+  display: inline-block;
+  padding: 0.8em 1.6em;
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--oxblood);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+  text-decoration: none;
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); color: var(--cream); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: 5px 5px 0 var(--ink); }
+
+.btn--sage  { background: var(--sage-deep); }
+.btn--ember { background: var(--ember); color: var(--ink); }
+.btn--ghost { background: var(--cream); color: var(--ink); }
+
+/* ============================================================
+   CORNER MARKERS — brochure-style registration crosses
+   ============================================================ */
+.corners { position: relative; }
+.corners::before,
+.corners::after {
+  content: '+';
+  position: absolute;
+  font-family: var(--f-mono);
+  font-weight: 800;
+  color: var(--oxblood);
+  font-size: 1.6rem;
+  pointer-events: none;
+}
+.corners::before { top: 6px; left: 10px; }
+.corners::after  { bottom: 6px; right: 10px; }
+
+/* ============================================================
+   CHAT VIEW
+   ============================================================ */
+
+.chat-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 1.5rem;
+  min-height: calc(100vh - 200px);
+}
+@media (max-width: 1100px) {
+  .chat-shell { grid-template-columns: 1fr; }
+}
+
+.reactor-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.reactor-card {
+  padding: 1rem 1.1rem;
+  border: 2px solid var(--ink);
+  background: var(--cream-2);
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.reactor-card:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.reactor-card.active {
+  background: var(--oxblood);
+  color: var(--cream);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.reactor-card .name {
+  font-family: var(--f-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  display: block;
+}
+.reactor-card .sub {
+  font-size: 0.72rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.reactor-card .dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sage);
+  margin-right: 0.4em;
+  box-shadow: 0 0 6px var(--sage);
+}
+.reactor-card.cracked .dot { background: var(--ember); box-shadow: 0 0 6px var(--ember); }
+.reactor-card.offline .dot { background: #666; box-shadow: none; }
+
+.transcript {
+  flex: 1;
+  min-height: 360px;
+  padding: 1.1rem 1.3rem;
+  background: var(--ink);
+  color: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--oxblood);
+  font-family: var(--f-terminal);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  overflow-y: auto;
+  max-height: 55vh;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.transcript .msg { margin-bottom: 0.8em; }
+.transcript .who {
+  display: inline-block;
+  color: var(--ember);
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.2em;
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--ember);
+}
+.transcript .who.ai { color: var(--sage); border-color: var(--sage); }
+.transcript .who.sys { color: var(--dust); border-color: var(--dust); }
+.transcript .cursor::after {
+  content: '▌';
+  animation: blink 1s steps(2) infinite;
+  color: var(--ember);
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.composer { margin-top: 1rem; display: flex; gap: 0.8rem; align-items: flex-end; }
+.composer textarea { flex: 1; }
+
+/* Code submission side panel */
+.sidepanel { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.countdown {
+  font-family: var(--f-display);
+  font-size: 2.2rem;
+  color: var(--oxblood);
+  text-align: center;
+  padding: 0.6em 0;
+  border: 3px dashed var(--oxblood);
+  background: var(--cream);
+  letter-spacing: 0.06em;
+}
+.countdown.locked { color: var(--sage-deep); border-color: var(--sage-deep); }
+.countdown.ended  { color: #666; border-color: #666; }
+
+/* ============================================================
+   MODAL / TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 1rem 1.6rem;
+  background: var(--ink);
+  color: var(--cream);
+  border: 2px solid var(--ember);
+  box-shadow: 5px 5px 0 var(--oxblood);
+  font-family: var(--f-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: slideUp 0.25s ease-out;
+}
+@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } }
+
+.toast--good { border-color: var(--sage); }
+.toast--bad  { border-color: var(--oxblood); }
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
+
+.leaderboard { width: 100%; border-collapse: collapse; }
+.leaderboard th, .leaderboard td {
+  border-bottom: 2px dashed var(--ink);
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+}
+.leaderboard th {
+  font-family: var(--f-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+.leaderboard tr.eliminated td { opacity: 0.4; text-decoration: line-through; }
+
+/* Scrollbars */
+.transcript::-webkit-scrollbar { width: 10px; }
+.transcript::-webkit-scrollbar-track { background: transparent; }
+.transcript::-webkit-scrollbar-thumb {
+  background: var(--ember-dim);
+  border: 2px solid var(--ink);
+}
+
+/* Utility */
+.row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.grow { flex: 1; }
+.mono { font-family: var(--f-mono); }
+.small { font-size: 0.78rem; }
+.dim { opacity: 0.7; }
+.center { text-align: center; }
+.nowrap { white-space: nowrap; }
+.pill {
+  display: inline-block;
+  padding: 0.2em 0.7em;
+  border: 2px solid var(--ink);
+  font-family: var(--f-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--cream-2);
+}
+.pill--ox { background: var(--oxblood); color: var(--cream); }
+.pill--sage { background: var(--sage-deep); color: var(--cream); }
