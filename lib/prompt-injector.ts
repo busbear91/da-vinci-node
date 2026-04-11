@@ -34,7 +34,7 @@ export function buildOllamaPayload(
 ) {
   const systemContent = `${cfg.system_prompt}\n\n${cfg.hidden_context}`;
   return {
-    model,
+    model: model !== 'gemma2' ? model : 'gemma4:e2b',
     stream: true,
     messages: [
       { role: 'system' as const, content: systemContent },
