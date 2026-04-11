@@ -88,7 +88,8 @@ export async function POST(req: Request) {
       } finally {
         controller.close();
         // Log demos too, tagged with a synthetic team_id = null.
-        supabaseAdmin
+        try {
+          await supabaseAdmin
           .from('prompt_logs')
           .insert({
             team_id: null,
@@ -100,8 +101,10 @@ export async function POST(req: Request) {
             tokens_out: tokensOut,
             latency_ms: 0,
             filter_blocked: false,
-          })
-          .then(() => {});
+          });
+        } catch(e) {
+          console.error('prompt_logs insert failed', e);
+        }
       }
     },
   });
