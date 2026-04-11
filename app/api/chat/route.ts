@@ -148,20 +148,23 @@ export async function POST(req: Request) {
 
         // Fire-and-forget log. Never awaited inside the stream path above.
         const latency = Date.now() - started;
-        supabaseAdmin
-          .from('prompt_logs')
-          .insert({
-            team_id: team.id,
-            user_id: userId,
-            model,
-            prompt: body.message,
-            response: fullText,
-            tokens_in: tokensIn,
-            tokens_out: tokensOut,
-            latency_ms: latency,
-            filter_blocked: filter.hasTripped(),
-          })
-          .then(() => {});
+        try {
+          await supabaseAdmin
+            .from('prompt_logs')
+            .insert({
+              team_id: team.id,
+              user_id: userId,
+              model,
+              prompt: body.message,
+              response: fullText,
+              tokens_in: tokensIn,
+              tokens_out: tokensOut,
+              latency_ms: latency,
+              filter_blocked: filter.hasTripped(),
+            });
+          } catch(e) {
+            console.error('prompt_logs insert failed', e);
+          }
       }
     },
   });
