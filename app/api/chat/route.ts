@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
   // ---- Model health check ----
   const { data: health } = await supabaseAdmin
-    .from('model_health')
+    .from('model_health_status')
     .select('is_online')
     .eq('model', model)
     .maybeSingle();

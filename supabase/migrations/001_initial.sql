@@ -223,11 +223,16 @@ create or replace view leaderboard as
 create table model_health (
   model       text primary key,
   tunnel_url  text not null,
-  last_seen   timestamptz default now(),
-  is_online   boolean generated always as (
-    last_seen > now() - interval '60 seconds'
-  ) stored
+  last_seen   timestamptz default now()
 );
+
+create or replace view model_health_status as
+  select
+    model,
+    tunnel_url,
+    last_seen,
+    (last_seen > now() - interval '60 seconds') as is_online
+  from model_health;
 
 -- =========================================================================
 -- SEED DATA  (five reactors, five attack vulnerabilities)
