@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  // Submit Login / New-Team Form
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -25,12 +26,18 @@ export default function LoginPage() {
         if (!teamName.trim()) throw new Error('Team call-sign required');
         const { data, error } = await sb.auth.signUp({ email, password });
         if (error) throw error;
-        if (data.user) {
-          // Create the team row. Captain = this user.
-          const { error: teamErr } = await sb
-            .from('teams')
-            .insert({ captain_id: data.user.id, team_name: teamName.trim() });
-          if (teamErr) throw teamErr;
+        if(!data.session) throw new Error('No session recovered from sign-up')
+        const res = await fetch('/api/register-team', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.session.access_token}`,
+          },
+          body: JSON.stringify({teamName: teamName.trim() }),
+        });
+        if (!res.ok) {
+          const msg = await res.text();
+          throw new Error(`Team registration failed: ${msg}`);
         }
       }
       window.location.href = '/';

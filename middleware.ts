@@ -38,5 +38,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   // Health is public (used by the homepage status widget).
-  matcher: ['/api/chat/:path*', '/api/submit-code/:path*', '/api/admin/:path*'],
+  matcher: ['/api/chat/:path*', '/api/submit-code/:path*', '/api/admin/:path*', '/api/register-team/:path*'],
 };
