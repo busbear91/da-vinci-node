@@ -24,21 +24,17 @@ export default function LoginPage() {
         if (error) throw error;
       } else {
         if (!teamName.trim()) throw new Error('Team call-sign required');
-        const { data, error } = await sb.auth.signUp({ email, password });
-        if (error) throw error;
-        if(!data.session) throw new Error('No session recovered from sign-up')
-        const res = await fetch('/api/register-team', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${data.session.access_token}`,
+        const { data, error } = await sb.auth.signUp({
+          email,
+          password,
+          options: {
+              emailRedirectTo: `${window.location.origin}/auth/callback`,
+              data: { teamName: teamName.trim()},
           },
-          body: JSON.stringify({teamName: teamName.trim() }),
         });
-        if (!res.ok) {
-          const msg = await res.text();
-          throw new Error(`Team registration failed: ${msg}`);
-        }
+        if (error) throw error;
+        setError('Check your email for a confirmation link to finish enlisting');
+        return;
       }
       window.location.href = '/';
     } catch (err: any) {
