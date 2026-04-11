@@ -34,7 +34,7 @@ export default function AuthCallback() {
         }
         localStorage.removeItem('pending_team_name');
       }
-      window.location.href = '/';
+      // window.location.href = '/';
     })();
   }, []);
 
