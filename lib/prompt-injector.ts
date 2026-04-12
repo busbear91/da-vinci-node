@@ -40,6 +40,9 @@ export function buildOllamaPayload(
   if (model === 'llama3') {
     modelname = 'llama3:8b'; // Use the smaller LLaMA 3 model for latency reasons; the prompt injection is the same on both
   }
+  if (model === 'phi4') {
+    modelname = 'phi4-mini-reasoning:3.8b'
+  }
   return {
     model: modelname,
     stream: true,
