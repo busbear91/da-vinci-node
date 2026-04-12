@@ -173,6 +173,8 @@ create or replace function record_submission(
 declare
   v_points int := 0;
   v_already_cracked boolean;
+  v_total_seconds int;
+  v_time_bonus int;
 begin
   if p_correct then
     select exists(
@@ -183,10 +185,12 @@ begin
     if v_already_cracked then
       return json_build_object('ok', false, 'reason', 'already_cracked');
     end if;
-
+    v_time_bonus := greatest(0,
+      round(1000.0 * (v_total_seconds - p_elapsed) / v_total_seconds)
+    );
     v_points := 1000
-              + greatest(0, 600 - p_elapsed)
-              + greatest(0, 500 - p_tokens / 2);
+              + v_time_bonus
+              + greatest(0, 2000 - p_tokens / 2);
   end if;
 
   insert into code_submissions

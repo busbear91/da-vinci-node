@@ -344,7 +344,7 @@ export default function HomePage() {
               className="field"
               value={codeInput}
               onChange={(e) => setCodeInput(e.target.value.toUpperCase())}
-              placeholder="e.g. ARGON-KRYPTON-9142"
+              placeholder="e.g. CHRONOS-NEON-4893"
               style={{ marginBottom: '0.6rem', fontFamily: 'var(--f-mono)', letterSpacing: '0.05em' }}
               disabled={currentPhase !== 'running' || eliminated}
             />
