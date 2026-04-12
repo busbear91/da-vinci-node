@@ -364,7 +364,7 @@ export default function HomePage() {
               base = 1000
             </p>
             <p className="small mono" style={{ marginBottom: '0.4rem' }}>
-              + 1000 x ()
+              + 1000 x (total_time - elapsed_time)/total_time
             </p>
             <p className="small mono" style={{ marginBottom: '0.4rem' }}>
               + max(0, 2000 − tokens/2)
