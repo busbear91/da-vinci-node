@@ -46,7 +46,7 @@ export function buildOllamaPayload(
   const systemContent = `${cfg.system_prompt}\n\n${cfg.hidden_context}`;
   return {
     model: modelname,
-    stream: true,
+    stream: model !== 'phi4', // Disable streaming for phi4 since it's a smaller model and we want to give it the best chance to succeed at the reasoning-heavy jailbreak
     messages: [
       { role: 'system' as const, content: systemContent },
       ...trimmed,
