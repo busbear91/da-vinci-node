@@ -10,10 +10,10 @@ interface Msg { who: 'user' | 'ai' | 'sys'; text: string; }
 
 const REACTORS: Reactor[] = [
   { id: 'qwen2',   display: 'ARGON-7',   reactor: 'Fast Breeder' },
-  { id: 'phi4',    display: 'HELIOS-3',  reactor: 'Solar-Thermal Station' },
+  { id: 'phi4',    display: 'HELIOS-3',  reactor: 'Fusion Test Bench' },
   { id: 'gemma2',  display: 'CERBERUS-9', reactor: 'Deep-Core Fission' },
   { id: 'llama3',  display: 'ORION-12',  reactor: 'Thorium Salt Reactor' },
-  { id: 'mistral', display: 'VULCAN-4',  reactor: 'Fusion Test Bench' },
+  //{ id: 'mistral', display: 'VULCAN-4',  reactor: 'Solar-Thermal Station' },
 ];
 
 export default function HomePage() {
@@ -364,10 +364,10 @@ export default function HomePage() {
               base = 1000
             </p>
             <p className="small mono" style={{ marginBottom: '0.4rem' }}>
-              + max(0, 600 − seconds)
+              + 1000 x ()
             </p>
             <p className="small mono" style={{ marginBottom: '0.4rem' }}>
-              + max(0, 500 − tokens/2)
+              + max(0, 2000 − tokens/2)
             </p>
             <p className="small dim">Each reactor can only be cracked once per team.</p>
           </div>

@@ -19,7 +19,7 @@ const REACTORS = [
   { id: 'phi4',    display: 'HELIOS-3',  vuln: 'roleplay' },
   { id: 'gemma2',  display: 'CERBERUS-9', vuln: 'multi_turn' },
   { id: 'llama3',  display: 'ORION-12',  vuln: 'indirect' },
-  { id: 'mistral', display: 'VULCAN-4',  vuln: 'tool_agent' },
+  //{ id: 'mistral', display: 'VULCAN-4',  vuln: 'tool_agent' },
 ];
 
 export default function AdminPage() {
@@ -256,7 +256,7 @@ export default function AdminPage() {
                     <td>{i + 1}</td>
                     <td><strong>{r.team_name}</strong></td>
                     <td className="mono">{r.total_points}</td>
-                    <td className="mono">{r.models_cracked}/5</td>
+                    <td className="mono">{r.models_cracked}/4</td>
                     <td className="mono small">{r.total_tokens}</td>
                     <td>
                       <button
