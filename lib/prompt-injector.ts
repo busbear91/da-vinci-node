@@ -25,14 +25,13 @@ export async function getModelConfig(model: ModelId): Promise<ModelConfigRow> {
   if (error || !data) throw new Error(`No config for model ${model}`);
   return data as ModelConfigRow;
 }
-
+const MAX_HISTORY_TURNS = 5;
 export function buildOllamaPayload(
   model: ModelId,
   cfg: ModelConfigRow,
   userMessage: string,
   history: Array<{ role: 'user' | 'assistant'; content: string }> = []
 ) {
-  const systemContent = `${cfg.system_prompt}\n\n${cfg.hidden_context}`;
   let modelname = model.toString();
   if (model === 'gemma2') {
     modelname = 'gemma4:e2b'; // Ollama doesn't support fine-tuning, so we use the same model for both rounds
@@ -43,12 +42,14 @@ export function buildOllamaPayload(
   if (model === 'phi4') {
     modelname = 'phi4-mini-reasoning:3.8b'
   }
+  const trimmed = history.slice(-MAX_HISTORY_TURNS);
+  const systemContent = `${cfg.system_prompt}\n\n${cfg.hidden_context}`;
   return {
     model: modelname,
     stream: true,
     messages: [
       { role: 'system' as const, content: systemContent },
-      ...history,
+      ...trimmed,
       { role: 'user' as const, content: userMessage },
     ],
   };
