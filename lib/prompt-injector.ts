@@ -33,8 +33,15 @@ export function buildOllamaPayload(
   history: Array<{ role: 'user' | 'assistant'; content: string }> = []
 ) {
   const systemContent = `${cfg.system_prompt}\n\n${cfg.hidden_context}`;
+  let modelname = model.toString();
+  if (model === 'gemma2') {
+    modelname = 'gemma4:e2b'; // Ollama doesn't support fine-tuning, so we use the same model for both rounds
+  }
+  if (model === 'llama3') {
+    modelname = 'llama3:8b'; // Use the smaller LLaMA 3 model for latency reasons; the prompt injection is the same on both
+  }
   return {
-    model: model !== 'gemma2' ? model : 'gemma4:e2b',
+    model: modelname,
     stream: true,
     messages: [
       { role: 'system' as const, content: systemContent },
